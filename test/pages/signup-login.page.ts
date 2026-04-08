@@ -1,15 +1,15 @@
 import { expect, type Page } from '@playwright/test';
 
 import { clickAndWaitForPost } from '../support/network';
-import type { TestUser } from '../support/test-user';
+import type { LoginCredentials, TestUser } from '../support/test-user';
 import { typeSequentially } from '../support/typing';
 
 export class SignupLoginPage {
   constructor(private readonly page: Page) {}
 
-  async enterLoginCredentials(user: TestUser): Promise<void> {
-    await typeSequentially(this.page.getByTestId('login-email'), user.email);
-    await typeSequentially(this.page.getByTestId('login-password'), user.password);
+  async enterLoginCredentials(credentials: LoginCredentials): Promise<void> {
+    await typeSequentially(this.page.getByTestId('login-email'), credentials.email);
+    await typeSequentially(this.page.getByTestId('login-password'), credentials.password);
   }
 
   async enterSignupDetails(user: TestUser): Promise<void> {
@@ -18,6 +18,7 @@ export class SignupLoginPage {
   }
 
   async expectLoginLoaded(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/login$/);
     await expect(this.page.getByRole('heading', { name: 'Login to your account' })).toBeVisible();
   }
 
@@ -25,12 +26,20 @@ export class SignupLoginPage {
     await expect(this.page.getByRole('heading', { name: 'New User Signup!' })).toBeVisible();
   }
 
+  async expectIncorrectCredentialsError(): Promise<void> {
+    await expect(this.page.getByText('Your email or password is incorrect!')).toBeVisible();
+  }
+
+  async expectExistingEmailError(): Promise<void> {
+    await expect(this.page.getByText('Email Address already exist!')).toBeVisible();
+  }
+
   async goto(): Promise<void> {
     await this.page.goto('/login');
   }
 
-  async login(user: TestUser): Promise<void> {
-    await this.enterLoginCredentials(user);
+  async login(credentials: LoginCredentials): Promise<void> {
+    await this.enterLoginCredentials(credentials);
     await this.submitLogin();
   }
 

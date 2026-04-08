@@ -1,3 +1,8 @@
+export type LoginCredentials = {
+  email: string;
+  password: string;
+};
+
 export type TestUser = {
   address: string;
   address2: string;
@@ -20,7 +25,7 @@ export type TestUser = {
   state: string;
   title: 'Mr.' | 'Mrs.';
   zipcode: string;
-};
+} & LoginCredentials;
 
 export function buildTestUser(browserName: string, retry: number): TestUser {
   const uniqueSuffix = `${browserName}-${Date.now()}-${retry}-${Math.random()
