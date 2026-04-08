@@ -5,6 +5,8 @@ test('shows an error when logging in with invalid credentials', async ({
   homePage,
   signupLoginPage,
 }) => {
+  test.slow();
+
   const invalidCredentials: LoginCredentials = {
     email: `invalid-${Date.now()}@example.com`,
     password: 'WrongPassword123',

@@ -14,15 +14,19 @@ export async function deleteUserViaUi(browser: Browser, user: TestUser): Promise
   const signupLoginPage = new SignupLoginPage(page);
 
   try {
-    await signupLoginPage.goto();
-    await signupLoginPage.expectLoginLoaded();
-    await signupLoginPage.login(user);
+    try {
+      await signupLoginPage.goto();
+      await signupLoginPage.expectLoginLoaded();
+      await signupLoginPage.login(user);
 
-    await homePage.expectLoggedInAs(user.name);
-    await homePage.deleteAccount();
-    await accountStatusPage.expectAccountDeleted();
+      await homePage.expectLoggedInAs(user.name);
+      await homePage.deleteAccount();
+      await accountStatusPage.expectAccountDeleted();
 
-    user.deleted = true;
+      user.deleted = true;
+    } catch {
+      // Cleanup is best-effort for this public demo site.
+    }
   } finally {
     await context.close();
   }
