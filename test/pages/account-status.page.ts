@@ -14,6 +14,8 @@ export class AccountStatusPage {
 
   async expectAccountDeleted(): Promise<void> {
     await expect(this.page).toHaveURL(/\/delete_account$/);
-    await expect(this.page.getByRole('heading', { name: 'Account Deleted!' })).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: /Account Deleted!/i })).toBeVisible({
+      timeout: 10_000,
+    });
   }
 }

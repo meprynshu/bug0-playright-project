@@ -7,6 +7,7 @@ export type TestUser = {
   city: string;
   company: string;
   country: string;
+  created: boolean;
   deleted: boolean;
   email: string;
   firstName: string;
@@ -35,6 +36,7 @@ export function buildTestUser(browserName: string, retry: number): TestUser {
     city: 'Pune',
     company: 'Bug0 QA',
     country: 'India',
+    created: false,
     deleted: false,
     email: `bug0-${uniqueSuffix}@example.com`,
     firstName: 'Bug0',

@@ -22,11 +22,13 @@ export class AccountInformationPage {
     await this.page.getByTestId('years').selectOption(user.birthYear);
 
     if (user.signUpForNewsletter) {
-      await this.page.getByLabel('Sign up for our newsletter!').check();
+      await this.page.locator('#newsletter').setChecked(true);
+      await expect(this.page.locator('#newsletter')).toBeChecked();
     }
 
     if (user.receivePartnerOffers) {
-      await this.page.getByLabel('Receive special offers from our partners!').check();
+      await this.page.locator('#optin').setChecked(true);
+      await expect(this.page.locator('#optin')).toBeChecked();
     }
   }
 
